@@ -1,4 +1,4 @@
-// NaijaPay Frontend JavaScript
+// afriPay Frontend JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize tooltips

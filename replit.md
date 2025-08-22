@@ -1,6 +1,6 @@
 # Overview
 
-NaijaPay is a digital wallet application built specifically for Nigeria, enabling users to send and receive money securely through a web-based platform. The application provides core features like user registration, wallet management, money transfers, and transaction history tracking. It's designed as a Flask-based web application with a focus on Nigerian users, including support for Nigerian phone number validation and Naira currency formatting.
+afriPay is a digital wallet application built specifically for Nigeria, enabling users to send and receive money securely through a web-based platform. The application provides core features like user registration, wallet management, money transfers, and transaction history tracking. It's designed as a Flask-based web application with a focus on Nigerian users, including support for Nigerian phone number validation and Naira currency formatting.
 
 # User Preferences
 
