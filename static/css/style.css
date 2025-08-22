@@ -1,0 +1,192 @@
+/* NaijaPay Custom Styles */
+
+:root {
+    --naija-green: #008751;
+    --naija-white: #ffffff;
+    --primary-gradient: linear-gradient(135deg, #008751 0%, #00b969 100%);
+}
+
+/* Custom primary color for Nigerian theme */
+.bg-primary {
+    background: var(--primary-gradient) !important;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    border-color: var(--naija-green);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #006b42 0%, #008751 100%);
+    border-color: #006b42;
+}
+
+.text-primary {
+    color: var(--naija-green) !important;
+}
+
+/* Wallet balance card styling */
+.card.bg-primary .card-body {
+    background: var(--primary-gradient);
+}
+
+/* Transaction list styling */
+.list-group-item {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+/* Status badges */
+.badge.bg-success {
+    background-color: #198754 !important;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+/* Custom form styling */
+.form-control:focus {
+    border-color: var(--naija-green);
+    box-shadow: 0 0 0 0.2rem rgba(0, 135, 81, 0.25);
+}
+
+/* Input group icons */
+.input-group-text {
+    background-color: var(--bs-gray-100);
+    border-color: var(--bs-border-color);
+}
+
+/* Card hover effects */
+.card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation styling */
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer styling */
+footer {
+    margin-top: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* Animation for loading states */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Transaction type indicators */
+.bg-success.bg-opacity-10 {
+    background-color: rgba(25, 135, 84, 0.1) !important;
+}
+
+.bg-danger.bg-opacity-10 {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+/* Table styling */
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 135, 81, 0.05);
+}
+
+/* Balance display */
+.balance-display {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+/* Status indicators */
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.status-indicator.success {
+    background-color: #198754;
+}
+
+.status-indicator.warning {
+    background-color: #ffc107;
+}
+
+.status-indicator.danger {
+    background-color: #dc3545;
+}
+
+/* Custom scrollbar for better UX */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bs-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bs-gray-400);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bs-gray-500);
+}
+
+/* Loading spinner */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Custom alert styling */
+.alert {
+    border: none;
+    border-radius: 8px;
+}
+
+/* Nigerian flag colors accent */
+.nigerian-accent {
+    background: linear-gradient(90deg, #008751 33.33%, #ffffff 33.33%, #ffffff 66.66%, #008751 66.66%);
+    height: 4px;
+    width: 100%;
+}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold mb-4">
+                Your Digital Wallet for <span class="text-primary">Nigeria</span>
+            </h1>
+            <p class="lead mb-4">
+                Send money, pay bills, and manage your finances securely with NaijaPay. 
+                The fastest and most reliable digital wallet platform in Nigeria.
+            </p>
+            <div class="d-flex gap-3">
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>Get Started
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="text-center">
+                <i class="fas fa-mobile-alt text-primary" style="font-size: 12rem;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-bolt text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">Instant Transfers</h5>
+                    <p class="card-text">
+                        Send money to anyone in Nigeria instantly using their username or wallet number.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-shield-alt text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">Secure & Safe</h5>
+                    <p class="card-text">
+                        Your money and personal information are protected with bank-level security.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-mobile-alt text-info" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">Mobile First</h5>
+                    <p class="card-text">
+                        Designed specifically for Nigerian mobile users with a clean, intuitive interface.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="text-center py-5">
+        <h2 class="mb-4">Ready to get started?</h2>
+        <p class="lead mb-4">Join thousands of Nigerians who trust NaijaPay for their digital payments.</p>
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+            <i class="fas fa-rocket me-2"></i>Create Your Wallet Now
+        </a>
+    </div>
+</div>
+{% endblock %}

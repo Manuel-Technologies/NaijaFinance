@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Transfer Money - NaijaPay{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-paper-plane me-2"></i>Send Money
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" novalidate>
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.recipient.id }}" class="form-label">Recipient</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                {{ form.recipient(class="form-control" + (" is-invalid" if form.recipient.errors else ""), placeholder="Enter username or wallet number") }}
+                                {% if form.recipient.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.recipient.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-text">
+                                You can send money using the recipient's username or 10-digit wallet number.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.amount.id }}" class="form-label">Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₦</span>
+                                {{ form.amount(class="form-control" + (" is-invalid" if form.amount.errors else ""), placeholder="0.00", step="0.01") }}
+                                {% if form.amount.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.amount.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.description.id }}" class="form-label">Description (Optional)</label>
+                            {{ form.description(class="form-control" + (" is-invalid" if form.description.errors else ""), placeholder="What's this payment for?", rows="3") }}
+                            {% if form.description.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.description.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Send Money
+                            </button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Balance Info -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Available Balance</h5>
+                    <h3 class="text-primary mb-0">₦{{ "{:,.2f}".format(wallet.balance) }}</h3>
+                </div>
+            </div>
+            
+            <!-- Transfer Tips -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>Transfer Tips
+                    </h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <small>Double-check recipient details before sending</small>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <small>All transfers are processed instantly</small>
+                        </li>
+                        <li class="mb-0">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <small>You can use username or wallet number</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Format amount input
+    const amountInput = document.getElementById('amount');
+    if (amountInput) {
+        amountInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+            // Remove any non-digit or decimal point characters
+            value = value.replace(/[^0-9.]/g, '');
+            
+            // Ensure only one decimal point
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+            
+            // Limit to 2 decimal places
+            if (parts[1] && parts[1].length > 2) {
+                value = parts[0] + '.' + parts[1].substring(0, 2);
+            }
+            
+            e.target.value = value;
+        });
+    }
+});
+</script>
+{% endblock %}

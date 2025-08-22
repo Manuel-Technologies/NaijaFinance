@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - NaijaPay{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- Welcome Section -->
+        <div class="col-12 mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1>Welcome back, {{ current_user.first_name }}!</h1>
+                    <p class="text-muted mb-0">Manage your digital wallet and transactions</p>
+                </div>
+                <div class="d-none d-md-block">
+                    <small class="text-muted">Wallet ID: {{ wallet.wallet_number }}</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Balance Card -->
+        <div class="col-lg-8 mb-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="card-title mb-1">Total Balance</h5>
+                            <h2 class="mb-0">₦{{ "{:,.2f}".format(wallet.balance) }}</h2>
+                            <small class="opacity-75">Available Balance</small>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-wallet fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Quick Actions</h5>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('transfer') }}" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Send Money
+                        </a>
+                        <a href="{{ url_for('transactions') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-history me-2"></i>View History
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Account Overview -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Account Overview</h5>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Wallet Number:</span>
+                                <span class="fw-semibold">{{ wallet.wallet_number }}</span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Account Status:</span>
+                                <span class="badge bg-success">Active</span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Member Since:</span>
+                                <span class="fw-semibold">{{ current_user.created_at.strftime('%b %Y') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Transactions -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Transactions</h5>
+                    <a href="{{ url_for('transactions') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    {% if transactions %}
+                        <div class="list-group list-group-flush">
+                            {% for transaction in transactions %}
+                                <div class="list-group-item px-0">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            {% if transaction.sender_id == current_user.id %}
+                                                <div class="bg-danger bg-opacity-10 rounded-circle p-2">
+                                                    <i class="fas fa-arrow-up text-danger"></i>
+                                                </div>
+                                            {% else %}
+                                                <div class="bg-success bg-opacity-10 rounded-circle p-2">
+                                                    <i class="fas fa-arrow-down text-success"></i>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col">
+                                            <div class="fw-semibold">
+                                                {% if transaction.sender_id == current_user.id %}
+                                                    To {{ transaction.receiver.get_full_name() }}
+                                                {% else %}
+                                                    From {{ transaction.sender.get_full_name() }}
+                                                {% endif %}
+                                            </div>
+                                            <small class="text-muted">{{ transaction.description }}</small>
+                                        </div>
+                                        <div class="col-auto text-end">
+                                            <div class="fw-semibold
+                                                {% if transaction.sender_id == current_user.id %}text-danger{% else %}text-success{% endif %}">
+                                                {% if transaction.sender_id == current_user.id %}-{% else %}+{% endif %}₦{{ "{:,.2f}".format(transaction.amount) }}
+                                            </div>
+                                            <small class="text-muted">{{ transaction.created_at.strftime('%b %d') }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-receipt fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No transactions yet</h5>
+                            <p class="text-muted">Your transaction history will appear here.</p>
+                            <a href="{{ url_for('transfer') }}" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Send Your First Payment
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
