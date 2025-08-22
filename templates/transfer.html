@@ -20,7 +20,7 @@
                             <label for="{{ form.recipient.id }}" class="form-label">Recipient</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                {{ form.recipient(class="form-control" + (" is-invalid" if form.recipient.errors else ""), placeholder="Enter username or wallet number") }}
+                                {{ form.recipient(class="form-control" + (" is-invalid" if form.recipient.errors else ""), placeholder="Enter username or wallet number", id="recipient-input") }}
                                 {% if form.recipient.errors %}
                                     <div class="invalid-feedback">
                                         {{ form.recipient.errors[0] }}
@@ -29,6 +29,30 @@
                             </div>
                             <div class="form-text">
                                 You can send money using the recipient's username or 10-digit wallet number.
+                            </div>
+                            <!-- Recipient details display -->
+                            <div id="recipient-details" class="mt-2" style="display: none;">
+                                <div class="card border-success">
+                                    <div class="card-body py-2">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-check-circle text-success me-2"></i>
+                                            <div>
+                                                <strong id="recipient-name"></strong>
+                                                <br>
+                                                <small class="text-muted">
+                                                    Username: <span id="recipient-username"></span> | 
+                                                    Wallet: <span id="recipient-wallet"></span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="recipient-error" class="mt-2" style="display: none;">
+                                <div class="alert alert-danger py-2">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <span id="recipient-error-message"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -127,6 +151,75 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             e.target.value = value;
+        });
+    }
+    
+    // Recipient lookup functionality
+    const recipientInput = document.getElementById('recipient-input');
+    const recipientDetails = document.getElementById('recipient-details');
+    const recipientError = document.getElementById('recipient-error');
+    const recipientName = document.getElementById('recipient-name');
+    const recipientUsername = document.getElementById('recipient-username');
+    const recipientWallet = document.getElementById('recipient-wallet');
+    const recipientErrorMessage = document.getElementById('recipient-error-message');
+    
+    let lookupTimeout;
+    
+    if (recipientInput) {
+        recipientInput.addEventListener('input', function(e) {
+            const identifier = e.target.value.trim();
+            
+            // Clear previous timeout
+            clearTimeout(lookupTimeout);
+            
+            // Hide details and errors
+            recipientDetails.style.display = 'none';
+            recipientError.style.display = 'none';
+            
+            // If input is empty or too short, don't lookup
+            if (identifier.length < 3) {
+                return;
+            }
+            
+            // Debounce the lookup request
+            lookupTimeout = setTimeout(function() {
+                lookupRecipient(identifier);
+            }, 500);
+        });
+    }
+    
+    function lookupRecipient(identifier) {
+        fetch('/api/lookup_recipient', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+            },
+            body: JSON.stringify({
+                identifier: identifier
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show recipient details
+                recipientName.textContent = data.user.name;
+                recipientUsername.textContent = data.user.username;
+                recipientWallet.textContent = data.user.wallet_number;
+                recipientDetails.style.display = 'block';
+                recipientError.style.display = 'none';
+            } else {
+                // Show error message
+                recipientErrorMessage.textContent = data.message;
+                recipientError.style.display = 'block';
+                recipientDetails.style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Error looking up recipient:', error);
+            recipientErrorMessage.textContent = 'Error looking up recipient. Please try again.';
+            recipientError.style.display = 'block';
+            recipientDetails.style.display = 'none';
         });
     }
 });

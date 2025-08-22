@@ -244,6 +244,39 @@ def profile():
     
     return render_template('profile.html', form=form)
 
+@app.route('/api/lookup_recipient', methods=['POST'])
+@login_required
+def lookup_recipient():
+    """API endpoint to lookup recipient details by wallet number or username"""
+    from flask import jsonify, request
+    
+    identifier = request.json.get('identifier', '').strip()
+    if not identifier:
+        return jsonify({'success': False, 'message': 'No identifier provided'})
+    
+    # Look up by username first
+    user = User.query.filter_by(username=identifier).first()
+    
+    # If not found by username, try wallet number
+    if not user:
+        wallet = Wallet.query.filter_by(wallet_number=identifier).first()
+        if wallet:
+            user = wallet.user
+    
+    if user and user.id != current_user.id:
+        return jsonify({
+            'success': True,
+            'user': {
+                'name': user.get_full_name(),
+                'username': user.username,
+                'wallet_number': user.wallet.wallet_number if user.wallet else None
+            }
+        })
+    elif user and user.id == current_user.id:
+        return jsonify({'success': False, 'message': 'You cannot send money to yourself'})
+    else:
+        return jsonify({'success': False, 'message': 'Recipient not found'})
+
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html'), 404
