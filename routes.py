@@ -63,11 +63,11 @@ def register():
             db.session.add(user)
             db.session.flush()  # Get user ID before creating wallet
             
-            # Create wallet for the user
+            # Create wallet for the user with ₦2000 starting balance
             wallet = Wallet(
                 user_id=user.id,
                 wallet_number=generate_wallet_number(),
-                balance=0.00
+                balance=2000.00
             )
             
             db.session.add(wallet)
@@ -120,11 +120,11 @@ def dashboard():
     """User dashboard"""
     wallet = current_user.wallet
     if not wallet:
-        # Create wallet if it doesn't exist
+        # Create wallet if it doesn't exist with ₦2000 starting balance
         wallet = Wallet(
             user_id=current_user.id,
             wallet_number=generate_wallet_number(),
-            balance=0.00
+            balance=2000.00
         )
         db.session.add(wallet)
         db.session.commit()
